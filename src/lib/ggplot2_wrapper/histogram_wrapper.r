@@ -1,6 +1,7 @@
 require(ggplot2)
 require(R6)
 
+source("./src/lib/colors.r")
 source("./src/lib/ggplot2_wrapper/graph_wrapper.r")
 
 histogram_wrapper <-
@@ -10,12 +11,17 @@ histogram_wrapper <-
     public = list(
       initialize = function(data, aes) {
         super$initialize(data)
-        self$add_geom(aes)
       },
 
-      add_geom = function(aes) {
+      # FIXME: Enable to adjust x axis position.
+      add_geom = function(aes, bin_width) {
         private$graph_object <-
-          private$graph_object + geom_histogram(aes)
+          private$graph_object + geom_histogram(
+            aes,
+            binwidth = bin_width,
+            closed = "left",
+            boundary = 0,
+          )
       }
     )
   )
